@@ -50,23 +50,22 @@ font_family_monospace: ?[]const u8 = null,
 /// = 1 } }`. One that repeats a set option or another extra fails the apply. Default: none.
 extra: []const kosm.Setting = &.{},
 
-/// Colors from the theme: the background from black (white in light mode) with the theme's
-/// background alpha, widgets from its surface and state steps, text from white, links and
-/// the accents cyan. Sizes and fonts are left alone.
+/// Colors from the theme: the background from the background role with the theme's background
+/// alpha, widgets from its surface and state steps, text from the foreground role, links from
+/// the link role, the accent from the accent role and the second accent a brighter accent. Sizes and fonts are left alone.
 pub fn from(theme: kosm.Theme) App {
-    const palette = theme.palette;
     const variations = theme.variations;
-    const foreground = if (theme.mode == .dark) palette.white else palette.black;
-    const background = if (theme.mode == .dark) palette.black else palette.white;
+    const foreground = theme.roles.foreground;
+    const background = theme.roles.background;
     return .{
         .background = theme.asBackground(background),
         .base = theme.asBackground(variations.surface.raised.apply(background)),
         .text = foreground,
         .alternate_base = theme.asBackground(variations.state.hovered.apply(background)),
         .bright_text = variations.emphasis.strong.apply(foreground),
-        .link_text = palette.cyan,
-        .accent = palette.cyan,
-        .accent_secondary = variations.lightness.bright.apply(palette.cyan),
+        .link_text = theme.roles.link,
+        .accent = theme.roles.accent,
+        .accent_secondary = variations.lightness.bright.apply(theme.roles.accent),
     };
 }
 
@@ -117,7 +116,7 @@ test "the set options are flat lines with hyprlang colors, extras last, and a cl
         .warnings = &warnings,
         .app = "hyprtoolkit",
     };
-    var theme = kosm.Theme.from(.{ .black = kosm.hex("041c26"), .white = kosm.hex("a3c5cc"), .cyan = kosm.hex("2d8699") }, .dark);
+    var theme = kosm.Theme.from(.{ .palette = .{ .black = kosm.hex("041c26"), .white = kosm.hex("a3c5cc"), .cyan = kosm.hex("2d8699") }, .mode = .dark });
     theme.background_alpha = 0.5;
     var app = from(theme);
     app.h1_size = 25;

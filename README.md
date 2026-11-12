@@ -8,9 +8,10 @@ The app writes only the options that are set to `~/.config/hypr/hyprtoolkit.conf
 the file holds nothing but the theme, so kosm owns it. hyprtoolkit apps read it when they
 start.
 
-`from(theme)` sets the colors: the background from black (white in light mode) with the
-theme's `background_alpha`, widgets from its surface and state steps, text from white, links
-and the accents cyan. Sizes, roundings, the icon theme and fonts are left alone.
+`from(theme)` sets the colors: the background from the theme's background role with its
+`background_alpha`, widgets from its surface and state steps, text from the foreground role,
+links from the link role, the accent from the accent role and the second accent a brighter
+accent. Sizes, roundings, the icon theme and fonts are left alone.
 
 ## Fields
 
